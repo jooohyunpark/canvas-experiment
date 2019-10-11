@@ -5,20 +5,20 @@ const { lerp } = require('canvas-sketch-util/math');
 random.setSeed(random.getRandomSeed());
 
 const settings = {
+  animate: true,
+  duration: 10,
   seed: random.getSeed(),
   exportPixelRatio: 2,
   dimensions: [1440, 1440]
 };
 
-// console.log('Seed', settings.seed);
-
 const sketch = ({ width, height }) => {
-  const lineCount = 10; //250
-  const lineSegments = 20; //400
-  const foreground = '#ffffff';
+  const lineCount = 100; //250
+  const lineSegments = 200; //400
 
   let lines = [];
   const margin = width * 0.15;
+
 
   for (let i = 0; i < lineCount; i++) {
     const A = i / (lineCount - 1);
@@ -49,7 +49,7 @@ const sketch = ({ width, height }) => {
     lines.push(line);
   }
 
-  return ({ context, width, height }) => {
+  return ({ context, width, height, playhead }) => {
     context.fillStyle = '#181818';
     context.globalAlpha = 1;
     context.globalCompositeOperation = 'source-over';
@@ -57,6 +57,8 @@ const sketch = ({ width, height }) => {
     context.lineWidth = 1;
 
     lines.forEach(line => {
+      let variation = 1;
+
       context.beginPath();
       line.forEach(([x, y]) => {
         // curve
@@ -64,15 +66,30 @@ const sketch = ({ width, height }) => {
         let data = bezierCommand([x, y], index, line)
         context.quadraticCurveTo(data[0], data[1], data[2], data[3], data[4], data[5])
 
+        // context.quadraticCurveTo(data[0], data[1] * variation, data[2], data[3] * variation, data[4], data[5])
+        // variation += 0.002 * loopNoise(x, y, playhead)
+        // variation2 += 0.0002 * loopNoise(0, 1, playhead)
+
         // // line
         // context.lineTo(x, y)
+
+        let color_variation = x / (width * 0.75);
+        context.strokeStyle = `hsla(${200}, ${100 * color_variation}%, ${50}%, ${1})`;
       });
+
       context.globalCompositeOperation = 'lighter';
-      context.strokeStyle = foreground;
-      context.globalAlpha = 0.35;
+      // context.strokeStyle = `hsla(${180}, 100%, 50%, 1)`;
+      context.globalAlpha = 1;//0.55;
       context.stroke();
     });
+
   };
+
+  function loopNoise(x, y, t, scale = 1) {
+    const duration = scale;
+    const current = t * scale;
+    return ((duration - current) * random.noise3D(x, y, current) + current * random.noise3D(x, y, current - duration)) / duration;
+  }
 
   function noise(nx, ny, z, freq = 0.75) {
     // This uses many layers of noise to create a more organic pattern
@@ -141,6 +158,7 @@ const sketch = ({ width, height }) => {
     return true;
   }
 
+  // get index of target in 2x2 array
   function indexOf(arr, val, comparer) {
     for (var i = 0, len = arr.length; i < len; ++i) {
       if (i in arr && comparer(arr[i], val)) {
