@@ -10,12 +10,12 @@ const settings = {
   dimensions: [1440, 1440]
 };
 
-console.log('Seed', settings.seed);
+// console.log('Seed', settings.seed);
 
 const sketch = ({ width, height }) => {
   const lineCount = 10; //250
   const lineSegments = 20; //400
-  const foreground = '#EEF0F0';
+  const foreground = '#ffffff';
 
   let lines = [];
   const margin = width * 0.15;
@@ -25,6 +25,7 @@ const sketch = ({ width, height }) => {
     const line = [];
 
     const x = lerp(margin, width - margin, A);
+
     for (let j = 0; j < lineSegments; j++) {
       const B = j / (lineSegments - 1);
       const y = lerp(margin, height - margin, B);
@@ -58,9 +59,12 @@ const sketch = ({ width, height }) => {
     lines.forEach(line => {
       context.beginPath();
       line.forEach(([x, y]) => {
+        // curve
         let index = indexOf(line, [x, y], arraysIdentical);
         let data = bezierCommand([x, y], index, line)
         context.quadraticCurveTo(data[0], data[1], data[2], data[3], data[4], data[5])
+
+        // // line
         // context.lineTo(x, y)
       });
       context.globalCompositeOperation = 'lighter';
