@@ -13,8 +13,8 @@ const settings = {
 console.log('Seed', settings.seed);
 
 const sketch = ({ width, height }) => {
-  const lineCount = 250;
-  const lineSegments = 400;
+  const lineCount = 10; //250
+  const lineSegments = 20; //400
   const foreground = '#EEF0F0';
 
   let lines = [];
@@ -33,9 +33,13 @@ const sketch = ({ width, height }) => {
       const z0 = noise(x * frequency0, y * frequency0, -1);
       const z1 = noise(x * frequency0, y * frequency0, +1);
 
-      const warp = random.gaussian(20, 40);
-      const fx = x + z0 * warp;
-      const fy = y + z1 * warp;
+      const warp = random.gaussian(1, 10);
+
+      const x_variation = z0 * warp;
+      const y_variation = z1 * warp;
+
+      const fx = x + x_variation;
+      const fy = y + y_variation;
 
       const point = [fx, fy];
       line.push(point);
@@ -53,7 +57,12 @@ const sketch = ({ width, height }) => {
 
     lines.forEach(line => {
       context.beginPath();
-      line.forEach(([x, y]) => context.lineTo(x, y));
+      line.forEach(([x, y]) => {
+        let index = indexOf(line, [x, y], arraysIdentical);
+        let data = bezierCommand([x, y], index, line)
+        context.quadraticCurveTo(data[0], data[1], data[2], data[3], data[4], data[5])
+        // context.lineTo(x, y)
+      });
       context.globalCompositeOperation = 'lighter';
       context.strokeStyle = foreground;
       context.globalAlpha = 0.35;
@@ -77,6 +86,67 @@ const sketch = ({ width, height }) => {
     e *= 2;
     return e * 2 - 1;
   }
+
+  function curve(pointA, pointB) {
+    const lengthX = pointB[0] - pointA[0]
+    const lengthY = pointB[1] - pointA[1]
+    return {
+      length: Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
+      angle: Math.atan2(lengthY, lengthX)
+    }
+  }
+  function controlPoint(current, previous, next, reverse) {
+    // When 'current' is the first or last point of the array
+    // 'previous' or 'next' don't exist.
+    // Replace with 'current'
+    const p = previous || current
+    const n = next || current
+    // The smoothing ratio
+    const smoothing = 0.2
+    // Properties of the opposed-line
+    const o = curve(p, n)
+    // If is end-control-point, add PI to the angle to go backward
+    const angle = o.angle + (reverse ? Math.PI : 0)
+    const length = o.length * smoothing
+    // The control point position is relative to the current point
+    const x = current[0] + Math.cos(angle) * length
+    const y = current[1] + Math.sin(angle) * length
+    return [x, y]
+  }
+
+  function bezierCommand(point, i, a) {
+    // start control point
+    const [cpsX, cpsY] = controlPoint(i < 1 ? 0 : a[i - 1], i < 2 ? 0 : a[i - 2], point)
+    // end control point
+    const [cpeX, cpeY] = controlPoint(point, a[i - 1], a[i + 1], true)
+    // return `C ${cpsX},${cpsY} ${cpeX},${cpeY} ${point[0]},${point[1]}`
+    return [cpsX, cpsY, cpeX, cpeY, point[0], point[1]]
+  }
+
+  // Shallow array comparer
+  function arraysIdentical(arr1, arr2) {
+    var i = arr1.length;
+    if (i !== arr2.length) {
+      return false;
+    }
+    while (i--) {
+      if (arr1[i] !== arr2[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function indexOf(arr, val, comparer) {
+    for (var i = 0, len = arr.length; i < len; ++i) {
+      if (i in arr && comparer(arr[i], val)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+
 };
 
 canvasSketch(sketch, settings);

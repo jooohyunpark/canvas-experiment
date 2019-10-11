@@ -8,7 +8,7 @@ const settings = {
 
 const sketch = async () => {
   const count = 20;
-  const characters = '|⎯'.split('');
+  const characters = '–'.split('');
   const background = '#171717'
   const palette = ['hsl(0, 0%, 90%)'];
 
