@@ -12,7 +12,7 @@ const simplePalette = true;
 const palette = simplePalette ? ['#efb3b3', '#a0d0e8'] : random.shuffle(random.pick(palettes)).slice(0, 2);
 
 const settings = {
-  dimensions: [1440, 900],
+  dimensions: [1440, 1440],
   exportPixelRatio: 2,
   scaleToView: true,
   animate: true,
@@ -20,7 +20,7 @@ const settings = {
   context: 'webgl',
   // animate: true,
   fps: 24,
-  duration: 10,
+  duration: 8,
   // Turn on MSAA
   attributes: { antialias: true },
   seed: random.getSeed()
@@ -51,7 +51,7 @@ const sketch = ({ context, update }) => {
     for (let y = 0; y < count; y++) {
       const U = x / (count - 1);
       const V = y / (count - 1);
-      const spacing = 1.25;
+      const spacing = 1.9;
       const u = (U * 2 - 1) * spacing;
       const v = (V * 2 - 1) * spacing;
 
@@ -63,9 +63,9 @@ const sketch = ({ context, update }) => {
       const mesh = new THREE.Mesh(geometry, material);
       mesh.scale.set(
         random.gaussian(),
-        random.gaussian() * random.gaussian() * 2,
+        random.gaussian(),
         random.gaussian()
-      ).multiplyScalar(0.25 * random.gaussian());
+      ).multiplyScalar(0.08 * random.gaussian());
       mesh.position.set(
         u,
         0,
@@ -73,6 +73,7 @@ const sketch = ({ context, update }) => {
       );
       scene.add(mesh);
       array.push(mesh)
+      console.log(u, v)
     }
   }
 
@@ -102,7 +103,7 @@ const sketch = ({ context, update }) => {
         camera.bottom = -zoom + offset;
         camera.near = -100;
         camera.far = 100;
-        camera.position.set(zoom, zoom, zoom);
+        camera.position.set(0, zoom, 0);
         camera.lookAt(new THREE.Vector3());
       } else {
         camera.aspect = viewportWidth / viewportHeight;
@@ -116,7 +117,7 @@ const sketch = ({ context, update }) => {
 
       if (settings.animate) {
         for (let i = 0; i < count * count; i++) {
-          array[i].rotation.y = Math.PI * 2 * loopNoise(array[i].scale.x, array[i].scale.y, array[i].scale.z, playhead)
+          array[i].rotation.z = Math.PI * 2 * loopNoise(array[i].scale.x, array[i].scale.y, array[i].scale.z, playhead)
         }
       }
       camera.setViewOffset(width, height, 0, 25, width, height);
