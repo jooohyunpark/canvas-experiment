@@ -20,7 +20,7 @@ const settings = {
   context: 'webgl',
   // animate: true,
   fps: 24,
-  duration: 8,
+  duration: 10,
   // Turn on MSAA
   attributes: { antialias: true },
   seed: random.getSeed()
@@ -73,12 +73,12 @@ const sketch = ({ context, update }) => {
       );
       scene.add(mesh);
       array.push(mesh)
-      console.log(u, v)
+      // console.log(u, v)
     }
   }
 
   // Specify an ambient/unlit colour
-  // scene.add(new THREE.AmbientLight('#181818'));
+  scene.add(new THREE.AmbientLight('#181818'));
 
   // Add some light
   const light = new THREE.DirectionalLight('white', 4);
@@ -97,10 +97,10 @@ const sketch = ({ context, update }) => {
         const aspect = viewportWidth / viewportHeight;
         const zoom = 2.25;
         const offset = settings.animate ? 0.25 : 0.25;
-        camera.left = -zoom * aspect;
-        camera.right = zoom * aspect;
+        camera.left = -zoom * aspect * 1.05;
+        camera.right = zoom * aspect * 1.05;
         camera.top = zoom + offset;
-        camera.bottom = -zoom + offset;
+        camera.bottom = -zoom - offset / 3;
         camera.near = -100;
         camera.far = 100;
         camera.position.set(0, zoom, 0);
