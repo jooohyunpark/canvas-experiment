@@ -1,15 +1,14 @@
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
-const palettes = require('nice-color-palettes/1000.json').slice(250);
-
-random.setSeed(random.getRandomSeed());
+const palettes = require('nice-color-palettes/1000.json').slice(200);
 
 // Ensure ThreeJS is in global scope for the 'examples/'
 global.THREE = require('three');
 
+
 const isometric = true;
-const simplePalette = true;
-const palette = simplePalette ? ['#efb3b3', '#a0d0e8'] : random.shuffle(random.pick(palettes)).slice(0, 2);
+// const palette = random.shuffle([...random.pick(palettes), ...random.pick(palettes)]);
+
 
 const settings = {
   dimensions: [1440, 1440],
@@ -18,12 +17,11 @@ const settings = {
   animate: true,
   // Get a WebGL canvas rather than 2D
   context: 'webgl',
-  // animate: true,
   fps: 24,
   duration: 10,
   // Turn on MSAA
   attributes: { antialias: true },
-  seed: random.getSeed()
+  seed: random.setSeed(random.getRandomSeed())
 };
 
 const sketch = ({ context, update }) => {
@@ -58,14 +56,14 @@ const sketch = ({ context, update }) => {
       const material = new THREE.MeshStandardMaterial({
         roughness: 0.75,
         metalness: 0.25,
-        color: new THREE.Color(random.pick(palette))
+        color: new THREE.Color(random.pick(random.pick(palettes)))
       });
       const mesh = new THREE.Mesh(geometry, material);
       mesh.scale.set(
         random.gaussian(),
         random.gaussian(),
         random.gaussian()
-      ).multiplyScalar(0.08 * random.gaussian());
+      ).multiplyScalar(0.1 * random.gaussian());
       mesh.position.set(
         u,
         0,
@@ -73,12 +71,11 @@ const sketch = ({ context, update }) => {
       );
       scene.add(mesh);
       array.push(mesh)
-      // console.log(u, v)
     }
   }
 
   // Specify an ambient/unlit colour
-  scene.add(new THREE.AmbientLight('#181818'));
+  // scene.add(new THREE.AmbientLight(random.pick(random.pick(palettes))));
 
   // Add some light
   const light = new THREE.DirectionalLight('white', 4);
@@ -112,9 +109,6 @@ const sketch = ({ context, update }) => {
     },
     // And render events here
     render({ playhead, frame, width, height }) {
-
-      // console.log(array)
-
       if (settings.animate) {
         for (let i = 0; i < count * count; i++) {
           array[i].rotation.z = Math.PI * 2 * loopNoise(array[i].scale.x, array[i].scale.y, array[i].scale.z, playhead)
