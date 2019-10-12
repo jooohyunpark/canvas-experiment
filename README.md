@@ -1,7 +1,6 @@
-Experiment on generative arts using [canvas sketch](https://github.com/mattdesl/canvas-sketch). API Docs are documented [here](https://github.com/mattdesl/canvas-sketch/blob/master/docs/api.md). 
+Experiment on generative arts using [canvas sketch](https://github.com/mattdesl/canvas-sketch). Details and APIs are documented [here](https://github.com/mattdesl/canvas-sketch/blob/master/docs/api.md). 
 
 To setup framework, install package requirements and canvas sketch cli.
-
 ```
 npm i
 npm install canvas-sketch-cli --global
