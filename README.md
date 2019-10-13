@@ -15,6 +15,6 @@ cd my-sketches
 canvas-sketch sketch.js --new --open
 ```
 
-You can view details here.
+Links for details and documentation.
 * [CLI docs](https://github.com/mattdesl/canvas-sketch/blob/master/docs/cli.md) 
 * [APIs docs](https://github.com/mattdesl/canvas-sketch/blob/master/docs/api.md) 
