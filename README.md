@@ -1,13 +1,20 @@
-Experiment on generative arts using [canvas sketch](https://github.com/mattdesl/canvas-sketch). Details and APIs are documented [here](https://github.com/mattdesl/canvas-sketch/blob/master/docs/api.md). 
+Experiment on generative arts using [canvas sketch](https://github.com/mattdesl/canvas-sketch). 
 
-To setup framework, install package requirements and canvas sketch cli. (Note that command line interface won't work if it's not installed globally.)
+Following is to setup framework and run file. Note that canvas-sketch-cli won't work if not global.
 ```
-npm i
-npm install canvas-sketch-cli --global
+# Install the CLI tool globally
+npm install canvas-sketch-cli -g
+
+# Make a new folder to hold all your generative sketches
+mkdir my-sketches
+
+# Move into that folder
+cd my-sketches
+
+# Scaffold a new 'sketch.js' file and run on the browser
+canvas-sketch sketch.js --new --open
 ```
 
-To run project type following terminal comman in the root directory. 
-```
-canvas-sketch some_project.js --open
-```
-
+You can view details here.
+* [CLI docs](https://github.com/mattdesl/canvas-sketch/blob/master/docs/cli.md) 
+* [APIs docs](https://github.com/mattdesl/canvas-sketch/blob/master/docs/api.md) 
