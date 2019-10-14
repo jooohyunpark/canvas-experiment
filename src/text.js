@@ -45,7 +45,7 @@ const sketch = async () => {
 
   // Now return a render function for the sketch
   return ({ context, width, height, deltaTime }) => {
-    const margin = width * 0.175;
+    const margin = width * 0.1;
 
     context.fillStyle = background;
     context.fillRect(0, 0, width, height);

@@ -5,8 +5,6 @@ const palettes = require('nice-color-palettes/1000.json').slice(200);
 // Ensure ThreeJS is in global scope for the 'examples/'
 global.THREE = require('three');
 
-// const palette = random.shuffle([...random.pick(palettes), ...random.pick(palettes)]);
-
 const settings = {
   dimensions: [1440, 1440],
   exportPixelRatio: 2,

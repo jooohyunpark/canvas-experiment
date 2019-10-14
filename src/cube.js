@@ -7,7 +7,6 @@ const palettes = require('nice-color-palettes');
 const settings = {
   animate: true,
   dimensions: [1024, 1280],
-  // Get a WebGL canvas rather than 2D
   context: 'webgl',
   // Turn on MSAA
   attributes: { antialias: true }
@@ -20,7 +19,7 @@ const sketch = ({ context, width, height }) => {
   });
 
   // WebGL background color
-  renderer.setClearColor('hsl(0, 0%, 95%)', 1);
+  renderer.setClearColor('#ffffff', 1);
 
   // Setup a camera, we will update its settings on resize
   const camera = new THREE.OrthographicCamera();
@@ -161,7 +160,7 @@ const sketch = ({ context, width, height }) => {
 
         // Scale meshes in and out
         mesh.scale.copy(mesh.originalScale);
-        mesh.scale.multiplyScalar(Math.sin(mesh.time / mesh.duration * Math.PI));
+        mesh.scale.multiplyScalar(Math.max(Math.sin(mesh.time / mesh.duration * Math.PI), 0.00001));
 
         // Move meshes up
         mesh.position.y += deltaTime * 0.5;
