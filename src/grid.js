@@ -98,7 +98,7 @@ const sketch = ({ context, update }) => {
       camera.updateProjectionMatrix();
     },
     // And render events here
-    render({ playhead, frame, width, height }) {
+    render({ playhead, width, height }) {
       if (settings.animate) {
         for (let i = 0; i < count * count; i++) {
           array[i].rotation.z = Math.PI * 2 * loopNoise(array[i].scale.x, array[i].scale.y, array[i].scale.z, playhead)

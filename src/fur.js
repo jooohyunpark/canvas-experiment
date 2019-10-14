@@ -5,7 +5,7 @@ const { lerp } = require('canvas-sketch-util/math');
 random.setSeed(random.getRandomSeed());
 
 const settings = {
-  animate: true,
+  animate: false,
   duration: 10,
   seed: random.getSeed(),
   exportPixelRatio: 2,
@@ -13,12 +13,11 @@ const settings = {
 };
 
 const sketch = ({ width, height }) => {
-  const lineCount = 100; //250
-  const lineSegments = 200; //400
+  const lineCount = 600;
+  const lineSegments = 800;
 
   let lines = [];
   const margin = width * 0.15;
-
 
   for (let i = 0; i < lineCount; i++) {
     const A = i / (lineCount - 1);
@@ -34,7 +33,7 @@ const sketch = ({ width, height }) => {
       const z0 = noise(x * frequency0, y * frequency0, -1);
       const z1 = noise(x * frequency0, y * frequency0, +1);
 
-      const warp = random.gaussian(1, 10);
+      const warp = random.gaussian(1, 2);
 
       const x_variation = z0 * warp;
       const y_variation = z1 * warp;
@@ -49,7 +48,7 @@ const sketch = ({ width, height }) => {
     lines.push(line);
   }
 
-  return ({ context, width, height, playhead }) => {
+  return ({ context, width, height }) => {
     context.fillStyle = '#181818';
     context.globalAlpha = 1;
     context.globalCompositeOperation = 'source-over';
@@ -57,8 +56,6 @@ const sketch = ({ width, height }) => {
     context.lineWidth = 1;
 
     lines.forEach(line => {
-      let variation = 1;
-
       context.beginPath();
       line.forEach(([x, y]) => {
         // curve
@@ -66,30 +63,20 @@ const sketch = ({ width, height }) => {
         let data = bezierCommand([x, y], index, line)
         context.quadraticCurveTo(data[0], data[1], data[2], data[3], data[4], data[5])
 
-        // context.quadraticCurveTo(data[0], data[1] * variation, data[2], data[3] * variation, data[4], data[5])
-        // variation += 0.002 * loopNoise(x, y, playhead)
-        // variation2 += 0.0002 * loopNoise(0, 1, playhead)
-
         // // line
         // context.lineTo(x, y)
 
         let color_variation = x / (width * 0.75);
-        context.strokeStyle = `hsla(${200}, ${100 * color_variation}%, ${50}%, ${1})`;
+        context.strokeStyle = `hsla(${160 + 100 * color_variation}, ${100}%, ${50}%, ${1})`;
       });
 
       context.globalCompositeOperation = 'lighter';
       // context.strokeStyle = `hsla(${180}, 100%, 50%, 1)`;
-      context.globalAlpha = 1;//0.55;
+      context.globalAlpha = 0.55;
       context.stroke();
     });
 
   };
-
-  function loopNoise(x, y, t, scale = 1) {
-    const duration = scale;
-    const current = t * scale;
-    return ((duration - current) * random.noise3D(x, y, current) + current * random.noise3D(x, y, current - duration)) / duration;
-  }
 
   function noise(nx, ny, z, freq = 0.75) {
     // This uses many layers of noise to create a more organic pattern

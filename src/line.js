@@ -3,14 +3,15 @@ const { lerp } = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
 
 const settings = {
-  dimensions: [2048, 2048]
+  dimensions: [2048, 2048],
+  animate: false
 };
 
 const sketch = async () => {
-  const count = 20;
-  const characters = '–'.split('');
+  const count = 50;
+  const characters = '-'.split('');
   const background = '#171717'
-  const palette = ['hsl(0, 0%, 90%)'];
+  // const palette = ['#5200ff', '#34ebe8'];
 
   const createGrid = () => {
     const points = [];
@@ -20,10 +21,11 @@ const sketch = async () => {
         const v = y / (count - 1);
         const position = [u, v];
         const character = random.pick(characters);
-        const r = 50
+        const r = 40
         const e = 20
         points.push({
-          color: random.pick(palette),
+          // color: random.pick(palette),
+          color: `hsl(259, 0%, ${random.range(20, 100)}% )`,
           radius: Math.abs(r + e * random.gaussian()),
           position,
           character
@@ -37,21 +39,21 @@ const sketch = async () => {
 
   // Now return a render function for the sketch
   return ({ context, width, height }) => {
-    const margin = width * 0.175;
+    const margin = width * 0.18;
 
     context.fillStyle = background;
     context.fillRect(0, 0, width, height);
 
     points.forEach(data => {
-      const {
+      let {
         position,
         radius,
         color,
         character
       } = data;
 
-      const x = lerp(margin, width - margin, position[0]);
-      const y = lerp(margin, height - margin, position[1]);
+      let x = lerp(margin, width - margin, position[0]);
+      let y = lerp(margin, height - margin, position[1]);
 
       // Draw the character
       context.fillStyle = color;
