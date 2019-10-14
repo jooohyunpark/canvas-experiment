@@ -3,14 +3,15 @@ const { lerp } = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
 
 const settings = {
-  dimensions: [2048, 2048]
+  dimensions: [2048, 2048],
+  animate: true
 };
 
 const sketch = async () => {
   const count = 20;
-  const characters = '―'.split('');
+  const characters = '←↑→↓'.split('');
   const background = '#171717'
-  const palette = ['hsl(0, 0%, 90%)'];
+  // const palette = ['hsl(0, 0%, 90%)'];
 
   const createGrid = () => {
     const points = [];
@@ -22,12 +23,16 @@ const sketch = async () => {
         const character = random.pick(characters);
         const r = 40
         const e = 20
+        const duration = random.range(1, 4);
+        const time = random.range(0, duration);
         points.push({
           // color: random.pick(palette),
           color: `hsl(259, 0%, ${random.range(20, 100)}% )`,
           radius: Math.abs(r + e * random.gaussian()),
           position,
-          character
+          character,
+          time: time,
+          duration: duration
         });
       }
     }
@@ -37,7 +42,7 @@ const sketch = async () => {
   let points = createGrid().filter(() => random.chance(0.5));
 
   // Now return a render function for the sketch
-  return ({ context, width, height }) => {
+  return ({ context, width, height, deltaTime }) => {
     const margin = width * 0.175;
 
     context.fillStyle = background;
@@ -48,11 +53,28 @@ const sketch = async () => {
         position,
         radius,
         color,
-        character
+        character,
       } = data;
 
-      const x = lerp(margin, width - margin, position[0]);
-      const y = lerp(margin, height - margin, position[1]);
+      let x = lerp(margin, width - margin, position[0]);
+      let y = lerp(margin, height - margin, position[1]);
+
+      data.time += deltaTime;
+
+      if (data.time > data.duration) {
+        data.time = 0;
+        data.duration = random.range(1, 4);
+      }
+
+      if (character === '→') {
+        x += (width - margin * 2) / count * data.time
+      } else if (character === '←') {
+        x -= (width - margin * 2) / count * data.time
+      } else if (character === '↑') {
+        y -= (width - margin * 2) / count * data.time
+      } else if (character === '↓') {
+        y += (width - margin * 2) / count * data.time
+      }
 
       // Draw the character
       context.fillStyle = color;
