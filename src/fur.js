@@ -13,8 +13,8 @@ const settings = {
 };
 
 const sketch = ({ width, height }) => {
-  const lineCount = 600;
-  const lineSegments = 800;
+  const lineCount = 500;
+  const lineSegments = 500;
 
   let lines = [];
   const margin = width * 0.15;
@@ -55,6 +55,8 @@ const sketch = ({ width, height }) => {
     context.fillRect(0, 0, width, height);
     context.lineWidth = 1;
 
+    let seed_color = Math.floor(random.range(0, 360));
+
     lines.forEach(line => {
       context.beginPath();
       line.forEach(([x, y]) => {
@@ -67,7 +69,7 @@ const sketch = ({ width, height }) => {
         // context.lineTo(x, y)
 
         let color_variation = x / (width * 0.75);
-        context.strokeStyle = `hsla(${160 + 100 * color_variation}, ${100}%, ${50}%, ${1})`;
+        context.strokeStyle = `hsla(${seed_color + 100 * color_variation}, ${100}%, ${50}%, ${1})`;
       });
 
       context.globalCompositeOperation = 'lighter';
