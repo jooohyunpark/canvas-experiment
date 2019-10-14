@@ -55,7 +55,7 @@ const sketch = ({ width, height }) => {
     context.fillRect(0, 0, width, height);
     context.lineWidth = 1;
 
-    let seed_color = Math.floor(random.range(0, 360));
+    let seed_color = random.rangeFloor(0, 360);
 
     lines.forEach(line => {
       context.beginPath();
@@ -73,7 +73,6 @@ const sketch = ({ width, height }) => {
       });
 
       context.globalCompositeOperation = 'lighter';
-      // context.strokeStyle = `hsla(${180}, 100%, 50%, 1)`;
       context.globalAlpha = 0.55;
       context.stroke();
     });
