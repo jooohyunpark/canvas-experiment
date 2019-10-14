@@ -10,8 +10,8 @@ const settings = {
 const sketch = async () => {
   const count = 50;
   const characters = '-'.split('');
-  const background = '#171717'
-  // const palette = ['#5200ff', '#34ebe8'];
+  const background = '#000'
+  // const palette = ['#34ebe8'];
 
   const createGrid = () => {
     const points = [];
