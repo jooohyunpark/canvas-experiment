@@ -2,7 +2,6 @@ global.THREE = require('three');
 
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
-const palettes = require('nice-color-palettes');
 
 const settings = {
   animate: true,
@@ -28,7 +27,7 @@ const sketch = ({ context, width, height }) => {
   const scene = new THREE.Scene();
 
   // Get a palette for our scene
-  const palette = random.pick(palettes);
+  const palette = ['#5200ff', '#03fcf4', '#fc03b5'];
 
   // Snap 0..1 point to a -1..1 grid
   const grid = (n, gridSize) => {
