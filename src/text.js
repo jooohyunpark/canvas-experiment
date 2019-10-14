@@ -8,7 +8,7 @@ const settings = {
 
 const sketch = async () => {
   const count = 20;
-  const characters = '–'.split('');
+  const characters = '―'.split('');
   const background = '#171717'
   const palette = ['hsl(0, 0%, 90%)'];
 
@@ -20,10 +20,11 @@ const sketch = async () => {
         const v = y / (count - 1);
         const position = [u, v];
         const character = random.pick(characters);
-        const r = 50
+        const r = 40
         const e = 20
         points.push({
-          color: random.pick(palette),
+          // color: random.pick(palette),
+          color: `hsl(259, 0%, ${random.range(20, 100)}% )`,
           radius: Math.abs(r + e * random.gaussian()),
           position,
           character
