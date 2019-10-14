@@ -5,10 +5,7 @@ const palettes = require('nice-color-palettes/1000.json').slice(200);
 // Ensure ThreeJS is in global scope for the 'examples/'
 global.THREE = require('three');
 
-
-const isometric = true;
 // const palette = random.shuffle([...random.pick(palettes), ...random.pick(palettes)]);
-
 
 const settings = {
   dimensions: [1440, 1440],
@@ -35,9 +32,7 @@ const sketch = ({ context, update }) => {
   renderer.setClearColor('#000', 1);
 
   // Setup a camera
-  const camera = isometric
-    ? new THREE.OrthographicCamera()
-    : new THREE.PerspectiveCamera(45, 1, 0.01, 100);
+  const camera = new THREE.OrthographicCamera()
 
   // Setup your scene
   const scene = new THREE.Scene();
@@ -89,26 +84,24 @@ const sketch = ({ context, update }) => {
     resize({ pixelRatio, viewportWidth, viewportHeight }) {
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(viewportWidth, viewportHeight);
-      if (isometric) {
-        // Setup an isometric perspective
-        const aspect = viewportWidth / viewportHeight;
-        const zoom = 2.25;
-        const offset = settings.animate ? 0.25 : 0.25;
-        camera.left = -zoom * aspect * 1.05;
-        camera.right = zoom * aspect * 1.05;
-        camera.top = zoom + offset;
-        camera.bottom = -zoom - offset / 3;
-        camera.near = -100;
-        camera.far = 100;
-        camera.position.set(0, zoom, 0);
-        camera.lookAt(new THREE.Vector3());
-      } else {
-        camera.aspect = viewportWidth / viewportHeight;
-      }
+
+      // Setup an isometric perspective
+      const aspect = viewportWidth / viewportHeight;
+      const zoom = 2.25;
+      const offset = settings.animate ? 0.25 : 0.25;
+      camera.left = -zoom * aspect * 1.05;
+      camera.right = zoom * aspect * 1.05;
+      camera.top = zoom + offset;
+      camera.bottom = -zoom - offset / 3;
+      camera.near = -100;
+      camera.far = 100;
+      camera.position.set(0, zoom, 0);
+      camera.lookAt(new THREE.Vector3());
+
       camera.updateProjectionMatrix();
     },
     // And render events here
-    render({ playhead, frame, width, height }) {
+    render({ playhead, width, height }) {
       if (settings.animate) {
         for (let i = 0; i < count * count; i++) {
           array[i].rotation.z = Math.PI * 2 * loopNoise(array[i].scale.x, array[i].scale.y, array[i].scale.z, playhead)
