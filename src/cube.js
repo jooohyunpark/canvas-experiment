@@ -6,7 +6,7 @@ const palettes = require('nice-color-palettes');
 
 const settings = {
   animate: true,
-  dimensions: [ 1024, 1280 ],
+  dimensions: [1024, 1280],
   // Get a WebGL canvas rather than 2D
   context: 'webgl',
   // Turn on MSAA
@@ -128,7 +128,7 @@ const sketch = ({ context, width, height }) => {
   // draw each frame
   return {
     // Handle resize events here
-    resize ({ pixelRatio, viewportWidth, viewportHeight }) {
+    resize({ pixelRatio, viewportWidth, viewportHeight }) {
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(viewportWidth, viewportHeight);
 
@@ -148,7 +148,7 @@ const sketch = ({ context, width, height }) => {
       camera.updateProjectionMatrix();
     },
     // And render events here
-    render ({ time, deltaTime }) {
+    render({ time, deltaTime }) {
       // Animate each mesh with noise
       meshes.forEach(mesh => {
         // Each mesh has its own time that increases each frame
@@ -180,7 +180,7 @@ const sketch = ({ context, width, height }) => {
       renderer.render(scene, camera);
     },
     // Dispose of WebGL context (optional)
-    unload () {
+    unload() {
       renderer.dispose();
     }
   };

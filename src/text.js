@@ -25,6 +25,7 @@ const sketch = async () => {
         const e = 20
         const duration = random.range(1, 4);
         const time = random.range(0, duration);
+        const randomization = random.range(0, 1);
         points.push({
           // color: random.pick(palette),
           color: `hsl(259, 0%, ${random.range(20, 100)}% )`,
@@ -32,7 +33,8 @@ const sketch = async () => {
           position,
           character,
           time: time,
-          duration: duration
+          duration: duration,
+          randomization: randomization
         });
       }
     }
@@ -53,7 +55,7 @@ const sketch = async () => {
         position,
         radius,
         color,
-        character,
+        character
       } = data;
 
       let x = lerp(margin, width - margin, position[0]);
@@ -64,16 +66,17 @@ const sketch = async () => {
       if (data.time > data.duration) {
         data.time = 0;
         data.duration = random.range(1, 4);
+        data.randomization = random.range(0, 1);
       }
 
       if (character === '→') {
-        x += (width - margin * 2) / count * data.time
+        x += (width - margin * 2) / count * data.time * data.randomization
       } else if (character === '←') {
-        x -= (width - margin * 2) / count * data.time
+        x -= (width - margin * 2) / count * data.time * data.randomization
       } else if (character === '↑') {
-        y -= (width - margin * 2) / count * data.time
+        y -= (width - margin * 2) / count * data.time * data.randomization
       } else if (character === '↓') {
-        y += (width - margin * 2) / count * data.time
+        y += (width - margin * 2) / count * data.time * data.randomization
       }
 
       // Draw the character
