@@ -4,7 +4,7 @@ const random = require('canvas-sketch-util/random');
 
 const settings = {
     animate: true,
-    duration: 4,
+    duration: 8,
     dimensions: [2048, 2048]
 };
 
