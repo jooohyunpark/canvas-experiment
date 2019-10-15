@@ -105,9 +105,9 @@ const sketch = ({ context, width, height }) => {
           positions[i + 2] = (Math.sin((ix + count) * 0.2) * 100) +
             (Math.sin((iy + count) * 0.2) * 20);
 
-          colors[i] += (2 * Math.sin(counter) / 100) * randomization[j] * variation[0];
+          colors[i] -= (2 * Math.sin(counter) / 100) * randomization[j] * variation[0];
           colors[i + 1] += (2 * Math.sin(counter) / 100) * variation[1];
-          colors[i + 2] -= 2 * Math.cos(counter) / 100 * randomization[j] * variation[2];
+          colors[i + 2] += 2 * Math.cos(counter) / 100 * randomization[j] * variation[2];
           i += 3;
           j++;
         }
