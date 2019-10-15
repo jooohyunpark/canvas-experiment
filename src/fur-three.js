@@ -1,11 +1,7 @@
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
 const { lerp } = require('canvas-sketch-util/math');
-// const palettes = require('nice-color-palettes/1000.json').slice(200);
 global.THREE = require('three');
-
-// Include any additional ThreeJS examples below
-require('three/examples/js/controls/OrbitControls');
 
 random.setSeed(random.getRandomSeed());
 
@@ -40,17 +36,17 @@ const sketch = ({ context, width, height }) => {
   // Setup your scene
   const scene = new THREE.Scene();
 
-  // var light = new THREE.DirectionalLight(0xffffff, 1);
-  // light.position.set(1, 1, 1).normalize();
-  // scene.add(light);
-
+  const variation = [random.range(0.01, 1), random.range(0.01, 1), random.range(0.02, 1)];
   const margin = 0;
   let positions = [];
   let colors = [];
   let randomization = [];
+  let count = 0;
+  let counter = 0;
+  let increase = Math.PI * 2 / 100;
+
   let lineCount = 200;
   let lineSegments = 400;
-  let count = 0;
 
   var material = new THREE.LineBasicMaterial({
     vertexColors: THREE.VertexColors
@@ -77,7 +73,7 @@ const sketch = ({ context, width, height }) => {
       positions.push(fx, fy, 0)
 
       colors.push((fx / width - margin * 2));
-      colors.push(random.range(0, 0.2));
+      colors.push(random.range(0, 0.1));
       colors.push((fy / height - margin * 2) + 0.5);
       randomization.push(random.range(0.001, 1))
     }
@@ -90,16 +86,6 @@ const sketch = ({ context, width, height }) => {
   geometry.computeBoundingSphere();
   line = new THREE.Line(geometry, material);;
   scene.add(line);
-
-
-  // // transparent filter
-  // var geometry_filter = new THREE.BoxBufferGeometry(100, 100, 0);
-  // var material_filter = new THREE.MeshBasicMaterial({ color: 'black', opacity: 0.3 });
-  // material_filter.transparent = true
-  // var filter = new THREE.Mesh(geometry_filter, material_filter);
-  // filter.position.set(width / 2, height / 2, 3800)
-  // scene.add(filter);
-
 
   return {
     resize({ pixelRatio, viewportWidth, viewportHeight }) {
@@ -116,26 +102,20 @@ const sketch = ({ context, width, height }) => {
       var i = 0, j = 0;
       for (var ix = 0; ix < lineCount; ix++) {
         for (var iy = 0; iy < lineSegments; iy++) {
-          // positions[i + 2] = (Math.sin((ix + count) * randomization[j]) * 50) +
-          //   (Math.sin((iy + count) * randomization[j]) * 50);
+          positions[i + 2] = (Math.sin((ix + count) * 0.2) * 100) +
+            (Math.sin((iy + count) * 0.2) * 20);
 
-          positions[i + 2] = (Math.sin((ix + count) * 0.2) * 50) +
-            (Math.sin((iy + count) * 0.2) * 50);
-
-          // colors[i] += loopNoise(ix, iy, playhead) * 0.001
-
-          // colors[i + 1] = (Math.sin((ix + count) * 0.1) * 50) +
-          //   (Math.sin((iy + count) * randomization[j]) * 50);
-
-          // console.log(Math.sin((ix + count)))
-
-
+          colors[i] += (2 * Math.sin(counter) / 100) * randomization[j] * variation[0];
+          colors[i + 1] += (2 * Math.sin(counter) / 100) * variation[1];
+          colors[i + 2] -= 2 * Math.cos(counter) / 100 * randomization[j] * variation[2];
           i += 3;
           j++;
         }
       }
 
       count += 0.1;
+      counter += increase * 0.2;
+
       line.geometry.attributes.position.needsUpdate = true;
       line.geometry.attributes.color.needsUpdate = true;
 
@@ -161,12 +141,6 @@ function noise(nx, ny, z, freq = 0.75) {
   e = Math.max(e, 0);
   e *= 2;
   return e * 2 - 1;
-}
-
-function loopNoise(x, y, t, scale = 1) {
-  const duration = scale;
-  const current = t * scale;
-  return ((duration - current) * random.noise3D(x, y, current) + current * random.noise3D(x, y, current - duration)) / duration;
 }
 
 canvasSketch(sketch, settings);
