@@ -1,7 +1,7 @@
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
 const { lerp } = require('canvas-sketch-util/math');
-const palettes = require('nice-color-palettes/1000.json').slice(200);
+// const palettes = require('nice-color-palettes/1000.json').slice(200);
 global.THREE = require('three');
 
 // Include any additional ThreeJS examples below
@@ -10,10 +10,10 @@ require('three/examples/js/controls/OrbitControls');
 random.setSeed(random.getRandomSeed());
 
 const settings = {
-  animate: false,
+  animate: true,
   context: 'webgl',
   fps: 24,
-  duration: 10,
+  duration: 8,
   attributes: { antialias: true },
   scaleToView: true,
   seed: random.getSeed(),
@@ -32,7 +32,7 @@ const sketch = ({ context, width, height }) => {
   renderer.setClearColor('#000', 1);
 
   // Setup a camera
-  let camera = new THREE.PerspectiveCamera(27, width / height, 1, 4000);
+  let camera = new THREE.PerspectiveCamera(27, width / height, 1, 10000);
   camera.position.z = 4000;
   camera.position.y = width / 2;
   camera.position.x = width / 2;
@@ -44,42 +44,13 @@ const sketch = ({ context, width, height }) => {
   // light.position.set(1, 1, 1).normalize();
   // scene.add(light);
 
-  // var segments = 100;
-  // var geometry = new THREE.BufferGeometry();
-  // var material = new THREE.LineBasicMaterial({ vertexColors: THREE.VertexColors });
-  // var positions = [];
-  // var colors = [];
-
-  // var r = 1000;
-  // for (var i = 0; i < segments; i++) {
-  //   var x = Math.random() * r - r / 2;
-  //   var y = Math.random() * r - r / 2;
-  //   var z = Math.random() * r - r / 2;
-  //   // positions
-  //   positions.push(x, y, z);
-  //   // colors
-  //   colors.push((x / r) + 0.5);
-  //   colors.push((y / r) + 0.5);
-  //   colors.push((z / r) + 0.5);
-
-  // }
-
-  // // console.log(positions)
-
-
-  // geometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-  // geometry.addAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-  // geometry.computeBoundingSphere();
-  // line = new THREE.Line(geometry, material);
-  // scene.add(line);
-
-
-  const lineCount = 400;
-  const lineSegments = 600;
   const margin = 0;
   let positions = [];
   let colors = [];
-
+  let randomization = [];
+  let lineCount = 200;
+  let lineSegments = 400;
+  let count = 0;
 
   var material = new THREE.LineBasicMaterial({
     vertexColors: THREE.VertexColors
@@ -98,7 +69,7 @@ const sketch = ({ context, width, height }) => {
       const z0 = noise(x * frequency0, y * frequency0, -1);
       const z1 = noise(x * frequency0, y * frequency0, +1);
 
-      const warp = random.gaussian(1, 10);
+      const warp = random.gaussian(1, 20);
 
       const fx = x + z0 * warp;
       const fy = y + z1 * warp;
@@ -106,18 +77,29 @@ const sketch = ({ context, width, height }) => {
       positions.push(fx, fy, 0)
       colors.push((fx / width - margin * 2));
       colors.push(random.range(0, 0.2));
-      colors.push((fy / width - margin * 2) + 0.5);
+      colors.push((fy / height - margin * 2) + 0.5);
+      randomization.push(random.range(0.001, 1))
     }
   }
 
   geometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry.addAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geometry.addAttribute('randomization', new THREE.Float32BufferAttribute(randomization, 1));
+
   geometry.computeBoundingSphere();
-  line = new THREE.Line(geometry, material);
+  line = new THREE.Line(geometry, material);;
   scene.add(line);
 
 
-  // draw each frame
+  // // transparent filter
+  // var geometry_filter = new THREE.BoxBufferGeometry(100, 100, 0);
+  // var material_filter = new THREE.MeshBasicMaterial({ color: 'black', opacity: 0.3 });
+  // material_filter.transparent = true
+  // var filter = new THREE.Mesh(geometry_filter, material_filter);
+  // filter.position.set(width / 2, height / 2, 3800)
+  // scene.add(filter);
+
+
   return {
     resize({ pixelRatio, viewportWidth, viewportHeight }) {
       renderer.setPixelRatio(pixelRatio);
@@ -125,13 +107,35 @@ const sketch = ({ context, width, height }) => {
     },
     // And render events here
     render({ width, height }) {
+
+      var positions = line.geometry.attributes.position.array;
+      var randomization = line.geometry.attributes.randomization.array;
+
+      // console.log(randomization.length)
+      // console.log(positions.length)
+
+      var i = 0, j = 0;
+      for (var ix = 0; ix < lineCount; ix++) {
+        for (var iy = 0; iy < lineSegments; iy++) {
+          // positions[i + 2] = (Math.sin((ix + count) * randomization[j]) * 50) +
+          //   (Math.sin((iy + count) * randomization[j]) * 50);
+          positions[i + 2] = (Math.sin((ix + count) * 0.2) * 50) +
+            (Math.sin((iy + count) * 0.2) * 50);
+
+          i += 3;
+          j++;
+        }
+      }
+
+      count += 0.1;
+      line.geometry.attributes.position.needsUpdate = true;
+
       camera.aspect = width / height
       camera.updateProjectionMatrix();
       renderer.render(scene, camera);
     },
   };
 };
-
 
 function noise(nx, ny, z, freq = 0.75) {
   // This uses many layers of noise to create a more organic pattern
@@ -149,6 +153,5 @@ function noise(nx, ny, z, freq = 0.75) {
   e *= 2;
   return e * 2 - 1;
 }
-
 
 canvasSketch(sketch, settings);
