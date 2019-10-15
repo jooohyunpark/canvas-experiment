@@ -19,7 +19,7 @@ const settings = {
   seed: random.setSeed(random.getRandomSeed())
 };
 
-const sketch = ({ context, update }) => {
+const sketch = ({ context }) => {
 
   // Create a renderer
   const renderer = new THREE.WebGLRenderer({
@@ -56,7 +56,7 @@ const sketch = ({ context, update }) => {
         random.gaussian(),
         random.gaussian(),
         random.gaussian()
-      ).multiplyScalar(0.1 * random.gaussian());
+      ).multiplyScalar(0.11);
       mesh.position.set(
         u,
         0,
