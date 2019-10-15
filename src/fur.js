@@ -13,8 +13,8 @@ const settings = {
 };
 
 const sketch = ({ width, height }) => {
-  const lineCount = 500;
-  const lineSegments = 500;
+  const lineCount = 800;
+  const lineSegments = 800;
 
   let lines = [];
   const margin = width * 0.15;
