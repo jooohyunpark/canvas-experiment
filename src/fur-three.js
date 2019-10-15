@@ -75,6 +75,7 @@ const sketch = ({ context, width, height }) => {
       const fy = y + z1 * warp;
 
       positions.push(fx, fy, 0)
+
       colors.push((fx / width - margin * 2));
       colors.push(random.range(0, 0.2));
       colors.push((fy / height - margin * 2) + 0.5);
@@ -106,21 +107,28 @@ const sketch = ({ context, width, height }) => {
       renderer.setSize(viewportWidth, viewportHeight);
     },
     // And render events here
-    render({ width, height }) {
+    render({ width, height, time }) {
 
       var positions = line.geometry.attributes.position.array;
       var randomization = line.geometry.attributes.randomization.array;
-
-      // console.log(randomization.length)
-      // console.log(positions.length)
+      var colors = line.geometry.attributes.color.array;
 
       var i = 0, j = 0;
       for (var ix = 0; ix < lineCount; ix++) {
         for (var iy = 0; iy < lineSegments; iy++) {
           // positions[i + 2] = (Math.sin((ix + count) * randomization[j]) * 50) +
           //   (Math.sin((iy + count) * randomization[j]) * 50);
+
           positions[i + 2] = (Math.sin((ix + count) * 0.2) * 50) +
             (Math.sin((iy + count) * 0.2) * 50);
+
+          // colors[i] += loopNoise(ix, iy, playhead) * 0.001
+
+          // colors[i + 1] = (Math.sin((ix + count) * 0.1) * 50) +
+          //   (Math.sin((iy + count) * randomization[j]) * 50);
+
+          // console.log(Math.sin((ix + count)))
+
 
           i += 3;
           j++;
@@ -129,6 +137,7 @@ const sketch = ({ context, width, height }) => {
 
       count += 0.1;
       line.geometry.attributes.position.needsUpdate = true;
+      line.geometry.attributes.color.needsUpdate = true;
 
       camera.aspect = width / height
       camera.updateProjectionMatrix();
@@ -152,6 +161,12 @@ function noise(nx, ny, z, freq = 0.75) {
   e = Math.max(e, 0);
   e *= 2;
   return e * 2 - 1;
+}
+
+function loopNoise(x, y, t, scale = 1) {
+  const duration = scale;
+  const current = t * scale;
+  return ((duration - current) * random.noise3D(x, y, current) + current * random.noise3D(x, y, current - duration)) / duration;
 }
 
 canvasSketch(sketch, settings);
