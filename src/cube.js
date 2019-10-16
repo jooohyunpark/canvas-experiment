@@ -88,6 +88,7 @@ const sketch = ({ context, width, height }) => {
   // Re-use the same Geometry across all our cubes
   const geometry = new THREE.BoxGeometry(1, 1, 1);
 
+
   // The # of cubes to create
   const chunks = 50;
 
