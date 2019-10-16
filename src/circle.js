@@ -3,12 +3,14 @@ const { lerp } = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
 
 const settings = {
+    animate: true,
     dimensions: [2048, 2048]
 };
 
 const sketch = () => {
     const count = 50;
     let points = [];
+    let counter = 0;
 
     for (let x = 0; x < count; x++) {
         for (let y = 0; y < count; y++) {
@@ -32,7 +34,12 @@ const sketch = () => {
             const x = lerp(margin, width - margin, u);
             const y = lerp(margin, width - margin, v);
 
-            context.arc(x, y, width / (count * 2) * size, 0, 2 * Math.PI);
+            let computedSize = Math.abs(Math.sin((size + counter)));
+
+            context.arc(x, y, width / count * computedSize, 0, 2 * Math.PI);
+
+            counter += (Math.PI * 2 / 100) * random.range(0.0001, 0.0003);
+
             context.lineWidth = 2;
             context.strokeStyle = '#c2e1ff';
             context.stroke();
