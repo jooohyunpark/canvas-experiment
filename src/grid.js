@@ -2,7 +2,6 @@ const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
 const palettes = require('nice-color-palettes/1000.json').slice(200);
 
-// Ensure ThreeJS is in global scope for the 'examples/'
 global.THREE = require('three');
 
 const settings = {
@@ -10,33 +9,26 @@ const settings = {
   exportPixelRatio: 2,
   scaleToView: true,
   animate: true,
-  // Get a WebGL canvas rather than 2D
   context: 'webgl',
   fps: 24,
   duration: 10,
-  // Turn on MSAA
   attributes: { antialias: true },
   seed: random.setSeed(random.getRandomSeed())
 };
 
 const sketch = ({ context }) => {
 
-  // Create a renderer
   const renderer = new THREE.WebGLRenderer({
     context
   });
-
-  // WebGL background color
   renderer.setClearColor('#222b40', 1);
 
-  // Setup a camera
   const camera = new THREE.OrthographicCamera()
-
-  // Setup your scene
   const scene = new THREE.Scene();
-  let array = [];
 
+  let array = [];
   const count = 10;
+
   const geometry = new THREE.BoxGeometry(1, 1, 1);
   for (let x = 0; x < count; x++) {
     for (let y = 0; y < count; y++) {
@@ -67,10 +59,6 @@ const sketch = ({ context }) => {
     }
   }
 
-  // Specify an ambient/unlit colour
-  // scene.add(new THREE.AmbientLight(random.pick(random.pick(palettes))));
-
-  // Add some light
   const light = new THREE.DirectionalLight('white', 4);
   light.position.set(-1, 0, 1);
   light.lookAt(new THREE.Vector3());
@@ -78,7 +66,6 @@ const sketch = ({ context }) => {
 
   // draw each frame
   return {
-    // Handle resize events here
     resize({ pixelRatio, viewportWidth, viewportHeight }) {
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(viewportWidth, viewportHeight);
@@ -113,13 +100,11 @@ const sketch = ({ context }) => {
     }
   };
 
-
   function loopNoise(x, y, z, t, scale = 1) {
     const duration = scale;
     const current = t * scale;
     return ((duration - current) * random.noise4D(x, y, z, current) + current * random.noise4D(x, y, z, current - duration)) / duration;
   }
-
 
 };
 

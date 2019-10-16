@@ -25,7 +25,7 @@ const sketch = () => {
             line.forEach(position => {
                 let [u, v] = position;
 
-                u += 0.01 * loopNoise(u, v, playhead); // animtes the x cordinate  from previous node to current node
+                u += 0.01 * loopNoise(u, v, playhead);
                 const x = lerp(margin, width - margin, u);
                 const y = lerp(margin, width - margin, v);
 
