@@ -1,7 +1,6 @@
 const canvasSketch = require('canvas-sketch');
 const { lerp } = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
-const palettes = require('nice-color-palettes/1000.json').slice(100);
 
 const settings = {
   dimensions: [2048, 2048],
@@ -9,10 +8,10 @@ const settings = {
 };
 
 const sketch = async () => {
-  const count = 30;
+  const count = 50;
   const characters = '-'.split('');
-  const background = '#000';
-  // const palette = ['#34ebe8'];
+  const palette = random.rangeFloor(0, 360);
+  const background = `hsl(${palette}, ${5}%, ${15}% )`;
 
   const createGrid = () => {
     const points = [];
@@ -25,7 +24,7 @@ const sketch = async () => {
         const r = 40
         const e = 20
         points.push({
-          color: `hsl(0, 0%, ${random.range(20, 100)}% )`,
+          color: `hsl(${palette}, ${random.rangeFloor(20, 100)}%, ${random.rangeFloor(10, 90)}% )`,
           radius: Math.abs(r + e * random.gaussian()),
           position,
           character
@@ -57,7 +56,7 @@ const sketch = async () => {
 
       // Draw the character
       context.fillStyle = color;
-      context.font = `${radius * 2}px "SpaceGrotesk-Medium"`;
+      context.font = `${radius * 1.4}px "SpaceGrotesk-Medium"`;
       context.textAlign = 'center';
       context.textBaseline = 'middle';
       context.fillText(character, x, y);
