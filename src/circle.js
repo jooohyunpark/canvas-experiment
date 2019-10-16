@@ -3,8 +3,6 @@ const { lerp } = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
 
 const settings = {
-    // animate: true,
-    // duration: 8,
     dimensions: [2048, 2048]
 };
 
@@ -42,11 +40,5 @@ const sketch = () => {
 
     };
 };
-
-// function loopNoise(x, y, z, t, scale = 1) {
-//     const duration = scale;
-//     const current = t * scale;
-//     return ((duration - current) * random.noise4D(x, y, z, current) + current * random.noise4D(x, y, z, current - duration)) / duration;
-// }
 
 canvasSketch(sketch, settings);
