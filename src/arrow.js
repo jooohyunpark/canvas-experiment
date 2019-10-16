@@ -10,7 +10,7 @@ const settings = {
 const sketch = async () => {
   const count = 20;
   const characters = '←↑→↓'.split('');
-  const background = '#171717'
+  const background = '#cccccc'
   // const palette = ['hsl(0, 0%, 90%)'];
 
   const createGrid = () => {
@@ -28,7 +28,7 @@ const sketch = async () => {
         const randomization = random.range(0, 1);
         points.push({
           // color: random.pick(palette),
-          color: `hsl(259, 0%, ${random.range(20, 100)}% )`,
+          color: `hsl(259, 0%, ${random.range(0, 80)}% )`,
           radius: Math.abs(r + e * random.gaussian()),
           position,
           character,
