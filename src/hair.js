@@ -60,7 +60,7 @@ const sketch = () => {
             context.bezierCurveTo(xControl0, yControl0, xControl1, yControl1, width, y1)
 
             context.lineWidth = 2;
-            context.strokeStyle = random.chance(0.05) ? colors : '#000';
+            context.strokeStyle = random.chance(0.08) ? colors : '#000';
             context.globalAlpha = 0.18;
             context.stroke();
 
