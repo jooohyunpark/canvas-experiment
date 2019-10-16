@@ -27,7 +27,7 @@ const sketch = ({ context }) => {
   });
 
   // WebGL background color
-  renderer.setClearColor('#999999', 1);
+  renderer.setClearColor('#333333', 1);
 
   // Setup a camera
   const camera = new THREE.OrthographicCamera()
