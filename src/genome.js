@@ -5,7 +5,7 @@ const palettes = require('nice-color-palettes/1000.json');
 
 
 const settings = {
-    animate: true,
+    // animate: true,
     dimensions: [2048, 2048]
 };
 
@@ -32,12 +32,14 @@ const sketch = () => {
             context.beginPath();
             let [u, v] = [data[0], data[1]];
 
-            const x = lerp(margin, width - margin, u);
-            const y = lerp(margin, width - margin, v);
+            let x = lerp(margin, width - margin, u);
+            let y = lerp(margin, width - margin, v);
             const rect_width = (width - (margin * 2)) / xCount;
             const rect_height = ((height - (margin * 2)) / yCount) * 0.7;
 
+
             context.rect(x, y - (rect_height / 2), rect_width, rect_height);
+
 
             context.fillStyle = data[2];
             context.fill();
