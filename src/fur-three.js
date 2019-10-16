@@ -93,7 +93,7 @@ const sketch = ({ context, width, height }) => {
       renderer.setSize(viewportWidth, viewportHeight);
     },
     // And render events here
-    render({ width, height, time }) {
+    render({ width, height }) {
 
       var positions = line.geometry.attributes.position.array;
       var randomization = line.geometry.attributes.randomization.array;

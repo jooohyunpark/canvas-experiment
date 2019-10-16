@@ -28,20 +28,25 @@ const sketch = () => {
 
         points.forEach(point => {
             context.beginPath();
-            let [u, v] = point;
+            let [u, v] = [point[0], point[1]];
+            let size = point[2];
 
             const x = lerp(margin, width - margin, u);
             const y = lerp(margin, width - margin, v);
 
-            context.arc(x, y, width / (count * 2) * point[2], 0, 2 * Math.PI);
+            context.arc(x, y, width / (count * 2) * size, 0, 2 * Math.PI);
             context.lineWidth = 2;
             context.strokeStyle = '#c2e1ff';
             context.stroke();
         });
 
-
     };
-
 };
+
+// function loopNoise(x, y, z, t, scale = 1) {
+//     const duration = scale;
+//     const current = t * scale;
+//     return ((duration - current) * random.noise4D(x, y, z, current) + current * random.noise4D(x, y, z, current - duration)) / duration;
+// }
 
 canvasSketch(sketch, settings);
