@@ -43,7 +43,6 @@ const sketch = () => {
 
             context.lineWidth = 2;
             context.strokeStyle = `hsl(${seedColor + 360 * computedSize}, 100%, 50%)`;
-            // context.strokeStyle = '#c2e1ff';
             context.stroke();
         });
 
