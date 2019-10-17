@@ -63,7 +63,6 @@ const sketch = () => {
             context.strokeStyle = random.chance(0.08) ? colors : '#000';
             context.globalAlpha = 0.18;
             context.stroke();
-
         })
     };
 };

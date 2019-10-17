@@ -11,6 +11,7 @@ const sketch = () => {
     const count = 50;
     let points = [];
     let counter = 0;
+    let seedColor = random.rangeFloor(0, 360);
 
     for (let x = 0; x < count; x++) {
         for (let y = 0; y < count; y++) {
@@ -41,7 +42,8 @@ const sketch = () => {
             counter += (Math.PI * 2 / 100) * random.range(0.0001, 0.0003);
 
             context.lineWidth = 2;
-            context.strokeStyle = '#c2e1ff';
+            context.strokeStyle = `hsl(${seedColor + 360 * computedSize}, 100%, 50%)`;
+            // context.strokeStyle = '#c2e1ff';
             context.stroke();
         });
 
