@@ -11,7 +11,7 @@ const settings = {
   attributes: { antialias: true }
 };
 
-const sketch = ({ context, width, height }) => {
+const sketch = ({ context }) => {
   // Create a renderer
   const renderer = new THREE.WebGLRenderer({
     context
