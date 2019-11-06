@@ -24,7 +24,7 @@ const sketch = () => {
     }
 
     return ({ context, width, height }) => {
-        context.fillStyle = '#fff';
+        context.fillStyle = '#000b42';
         context.fillRect(0, 0, width, height);
         const margin = 0.1 * width;
 
