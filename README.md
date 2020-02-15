@@ -3,7 +3,7 @@ Experiment on generative arts using [canvas sketch](https://github.com/mattdesl/
 To setup framework and run file, type following terminal command in the root directory. Note that canvas-sketch-cli won't work if not global. 
 ```
 npm i
-npm install canvas-sketch-cli -g
+npm install canvas-sketch-cli
 canvas-sketch src/some_project.js --new --open
 ```
 
