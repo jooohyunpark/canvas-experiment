@@ -5,16 +5,14 @@ const { lerp } = require('canvas-sketch-util/math');
 random.setSeed(random.getRandomSeed());
 
 const settings = {
-  animate: false,
-  duration: 10,
   seed: random.getSeed(),
-  exportPixelRatio: 2,
-  dimensions: [1440, 1440]
+  // exportPixelRatio: 2,
+  dimensions: [1200, 1200]
 };
 
 const sketch = ({ width, height }) => {
-  const lineCount = 800;
-  const lineSegments = 800;
+  const lineCount = 300;
+  const lineSegments = 500;
 
   let lines = [];
   const margin = width * 0.15;
@@ -49,7 +47,7 @@ const sketch = ({ width, height }) => {
   }
 
   return ({ context, width, height }) => {
-    context.fillStyle = '#181818';
+    context.fillStyle = '#000';
     context.globalAlpha = 1;
     context.globalCompositeOperation = 'source-over';
     context.fillRect(0, 0, width, height);
@@ -65,15 +63,12 @@ const sketch = ({ width, height }) => {
         let data = bezierCommand([x, y], index, line)
         context.quadraticCurveTo(data[0], data[1], data[2], data[3], data[4], data[5])
 
-        // // line
-        // context.lineTo(x, y)
-
         let color_variation = x / (width * 0.75);
         context.strokeStyle = `hsla(${seed_color + 100 * color_variation}, ${100}%, ${50}%, ${1})`;
       });
 
       context.globalCompositeOperation = 'lighter';
-      context.globalAlpha = 0.55;
+      context.globalAlpha = 0.9;
       context.stroke();
     });
 

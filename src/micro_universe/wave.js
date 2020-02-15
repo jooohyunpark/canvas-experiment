@@ -5,7 +5,7 @@ const random = require('canvas-sketch-util/random');
 const settings = {
     animate: true,
     duration: 8,
-    dimensions: [2048, 2048]
+    dimensions: [800, 800]
 };
 
 const sketch = () => {
@@ -36,7 +36,7 @@ const sketch = () => {
                 // console.log('y, x : ', y, x);
             });
             context.lineWidth = 0.0001 * width;
-            context.strokeStyle = 'white';
+            context.strokeStyle = '#fff';
             context.stroke();
         })
     };
