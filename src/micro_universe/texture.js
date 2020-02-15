@@ -15,7 +15,7 @@ const sketch = ({ width, height }) => {
   const lineSegments = 500;
 
   let lines = [];
-  const margin = width * 0.15;
+  const margin = width * 0.1;
 
   for (let i = 0; i < lineCount; i++) {
     const A = i / (lineCount - 1);
