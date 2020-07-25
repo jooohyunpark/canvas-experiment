@@ -2,7 +2,9 @@
   "name": "generative-art-canvas-sketch",
   "version": "1.0.0",
   "description": "",
-  "scripts": {},
+  "scripts": {
+    "dev": "canvas-sketch --open"
+  },
   "keywords": [],
   "dependencies": {
     "bezier-easing": "^2.1.0",
